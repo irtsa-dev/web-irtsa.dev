@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/main.css">
+</head>
+<body>
+    <nav class="navMenu">
+        <a href="/">Home</a>
+        <a href="/blog">Blog</a>
+        <a href="/contact">Contact</a>
+        <div class="dot"></div>
+    </nav>
+    <div class="homeInformation">
+        <h1>
+            Conarn Development
+        </h1>
+        
+        <pre>
+I guess I should make a quick post as well on the latest project I put out: Conarn. So here is a quick post here about that.
+
+
+
+Conarn is a small project that I am working on that allows users to edit the save files of the game <b>Content warning</b> by
+<b>Landfall</b>. You can find a link to it <a href="https://github.com/irtsa-dev/conarn" target="_blank" rel="noopener">here</a>. if you are interested in it!
+Funny enough, it actually did not start out as a GUI, rather a CLI, photos of it are shown below.
+
+<img src="https://github.com/irtsa-dev/conarn/assets/139963912/45169eb6-1453-4e4c-a433-f79f3d3aad0e" height=280>
+<img src="https://github.com/irtsa-dev/conarn/assets/139963912/c5eae9b4-42f8-4c91-b7de-2128a1c24455" height=280>
+
+Yeah, cool times they were. It actually stayed that way for about a month before I started to develop the GUI version. I was the only one using it so I 
+figured there would be no point in making it look "fancy" (I am not an artist or designer, so to me it is fancy). The process of making it a GUI was not
+too difficult for the most part. I say for the most part because once I wanted to have a loading animation to make sure the program had time to make
+changes I wanted it to be making, it was a headache. A 3 hour long headache. This is because I wanted to utilize a gif version which I thought would be
+easier, turns out nope. In fact every method I tried such as loading each frame as an image, storing that in a list using Tkinter's photo image and later
+referencing them. I tried to load just the gif and playing it hope it would be okay with that. On and on and got nothing. Eventually I settled on just
+making each frame of the gif an image, putting that into a folder, and creating a customtkinter label to handle update the image every couple milliseconds
+ended up being the way to go.
+
+Glossing over a few extra details, I figured out how to get the Tkinter's notebook to work with the tabs for each kind of information I wanted to be able
+to edit. On the first tab would be simple information such as the file's index, the amount of money, views, and more. The other two tabs for inside and
+outside items respectively were made. When testing certain values, I did find out certain extreme values for money, views, and seeds tended to make the
+save file unplayable, as such I limited the values for them to prevent that issue. Soon, I had a working GUI for it but had no idea what to call it.
+
+I wanted to just use "Content Warning Save File Editor" but an obvious issue came with that: way too long. Obviously, so I sat there for a good bit before
+Conarn was decided. How did I decide on Conarn? Funny, if you take content warning, chop a good bit off the end of content to get "con" and the same for
+warning to get "warn" I had "conwarn." Once you removed the "w" in "conwarn" we are now left with what I would call the program: Conarn.
+
+After this, I made it public on github. I left out the ability to edit network deals because that would be a bit more complicated than what I wanted for
+the time being, but I do plan to add that in and left in bits of code (as well as now adding in some more) to allow for this functionality. I also
+eventually updated Conarn to have a nice "logo" that was similar to Content Warning which is seen below.
+
+<img src="https://github.com/IrtsaDevelopment/conarn/assets/139963912/5b365b42-4fdd-424a-a1da-a1e9590f5819" height="280">
+
+Eventually I added this to the gui to get the current look as it can now be seen today.
+
+<img src="https://github.com/IrtsaDevelopment/conarn/assets/139963912/a055dcdd-7b8b-4727-99ea-f13357c14ca5" height="280">
+<img src="https://github.com/IrtsaDevelopment/conarn/assets/139963912/7b613928-59a5-4523-a27e-0fb50cba8c60" height="280">
+        </pre>
+    </div>
+</body>
