@@ -46,6 +46,7 @@ div.contactInformation div.links a:link, div.contactInformation div.links a:visi
 }
 
 button {
+  margin-top: 1%;
   text-align: center;
   color: #ffffff;
   font-size: 15px;
