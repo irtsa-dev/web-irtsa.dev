@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/main.css">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?">
+</head>
+<body>
+    <nav class="navMenu">
+        <a href="/">Home</a>
+        <a href="/blog">Blog</a>
+        <a href="/contact">Contact</a>
+        <div class="dot"></div>
+    </nav>
+    <div class="homeInformation">
+        <h1>
+            VRChat Avatar Downloading
+        </h1>
+        
+        <pre>
+Weird topic I know, VRChat? Yeah I know, but I would like to put this somewhere at least because it is still a thing that can be done.
+
+
+          
+For those unaware, VRChat is a virtual reality / also desktop chatting / social interaction game where users can create their own avatars and worlds
+utilizing unity and VRChat's custom SDK (and now new tools for easier package management). It has moments of genuine fun with friends and it also has
+a good share of toxic individuals and groups within the game. I am not going to go too indepth about every aspect of this game, I only want to touch
+base on one: avatar downloading.
+
+This practice can also be called "ripping" as you are essentially downloading, extracting, and piecing back together avatars made by other people which may
+or may not have been intended to be readily distributed in this manner. Now, one way is by injected code (in other words, utilizing a client and/or loader
+for said modification) into the game to allow users to do things the developers did not intend. One such functionality is the ability to download the avatars
+of other people (i.e. "ripping").
+
+Majority of people believe you need a client / mod in order to achieve this, however, I am here to say that is not the case. It is fully possible to not even
+be inside the game to do this thanks to how the API of VRChat is. VRChat has an API that users can use (if they can figure out the endpoints, said endpoints have 
+been documented already) for various purposes such as automating tasks that normally one would do in the game or on their website. VRChat happens to have an
+endpoint that allows a user to get the information of an avatar using the id of the avatar.
+
+Avatar id? Every avatar in the game has an id and typically looks like: avtr_1a413261-1ue3-93aa-c20e-90d0ge517281
+
+If you want to utilize the developer tools on browsers with it, you can see that whenever you attempt to access the page of an avatar, the following is accessed:
+https://vrchat.com/api/1/avatars/[avatarid]
+
+Whenever this is accessed, a response is given, giving you information on who made the avatar (their in game name and id), the avatar's description, when it was
+made, the name of the avatar, and more. Funny enough, the information one is looking for will not be found here.
+
+
+<img src="https://github.com/irtsa-dev/conarn/assets/139963912/8f93dc48-4363-4c76-b76d-3337f0ef691f" height=150>
+
+
+
+As such, we will need to do a bit more in order to get access to the file we want, said file will end with a .vrca extension. Funny enough, this is not hard with
+python with the implementation going as follows.
+
+
+First, we will want to import <code>requests</code>, specifically <code>Session</code>. This will allow us to more easily manage authentication / cookies at needed later on.
+<code>
+from requests import Session
+</code>
+
+We will also right now want to import a few more for later use including <code>loads</code> from <code>json</code>, <code>b64encode</code> from <code>base64</code>, and both <code>mkdir</code> and
+<code>path</code> from <code>os</code>.
+<code>
+from requests import Session
+from base64 import b64encode
+from json import loads
+from os import path, mkdir
+</code>
+
+Once we have these, we can now start with the main part of the code. We will first want to initialize a session by setting a variable to a new <code>Session()</code>. After which, we can do the easy
+route of now making an alternate account on VRChat (or use your main one if you feel like rolling the dice on getting banned for doing this as you can be) and putting the credentials into variables.
+The reason we will be doing this is because VRChat requires an <b>Authorization</b> header in specific requests that has a value equal to (yes literally) "Basic [username]:[password]" passed.
+Implemented into python this all will look like:
+<code>
+session = Session()
+
+username = [your username]
+password = [your password]
+encodedInformation = b64encode(f'{username}:{password}'.encode()).decode()
+</code>
+
+          
+Easy so far right? Next, we will specify some headers for our requests. Some of these headers we will use will be to trick whatever you are trying to access into thinking that it is being access from a 
+browser. After that, we will add the <b>Authorization</b> header and use the <code>encodedInformation</code> variable with "Basic" prepended to it using an f-string to keep it simple.
+<code>
+requestHeaders = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'}
+requestHeaders['Authorization'] = f'Basic {encodedInformation}'
+</code>
+
+
+We are getting there we will now need to make a quick <b>GET</b> request to VRChat's API at their authentication endpoint. After we have done so, the <code>session</code> variable set to <code>Session()</code>
+will keep track of necessary details. We will also add a url variable of <code>?apiKey=JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26</code> to the end of the endpoint (this is required by VRChat).
+<code>
+session.get('https://api.vrchat.cloud/api/1/auth/user?apiKey=JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26', data = None, headers = requestHeaders)
+</code>
+
+
+Now, some people may have TFA on their account (and you might have set it up on this account). As such, we can specific an extra chunk of code to account for this (note this will only accept the 6 digit long
+codes typically seen on authentication apps) note the <code>?apiKey=JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26</code> being passed still as a url variable.
+<code>
+tfa = [your TFA code]
+session.post(('https://api.vrchat.cloud/api/1/auth/twofactorauth/totp/verify?apiKey=JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26'), {'code' : tfa}, headers = requestHeaders)
+requestHeaders.pop('Authorization')
+</code>
+
+
+Now we can get into the real bit. See, the .vrca file was not given when we initially checked the endpoint for the avatar information. I neglected an important detail: that being that the file will be given
+so long as you are currently in that avatar. As such, we can make a <b>PUT</b> request to VRChat to select that avatar for us. After doing so, we will switch into that avatar and can then utilize the same
+endpoint from earlier to get the information of the avatar.
+<code>
+avatarID = [avatar ID here]
+
+session.put(f'https://api.vrchat.cloud/api/1/avatars/{avatarID}/select', data = None, headers = self.requestHeaders)
+  
+req = session.get('https://api.vrchat.cloud/api/1/auth/user?apiKey=JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26', data = None, headers = requestHeaders)
+req = loads(req.__dict__['_content'])
+avatarUrl = req['currentAvatarAssetUrl']
+</code>
+
+          
+Notice where <code>loads()</code> from <code>json</code> was used. We then will access the "currentAvatarAssetUrl" variable from the newly made <code>req</code> dictionary holding our user information. Yes,
+our user information. This is getting our currently selected avatar's asset url. If we want, we can now get the avatar's name (to make things pretty).
+<code>
+req = session.get(f'https://api.vrchat.cloud/api/1/avatars/{avatarID}?apiKey=JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26', data = None, headers = self.requestHeaders)
+req = loads(req.__dict__['_content'])
+avatarName = req['name']
+</code>
+
+
+At this point, we can now download this asset using the url we got (as it is the .vrca file we are looking for):
+<code>
+req = session.get(avatarUrl, data=None, headers=requestHeaders)
+</code>
+
+
+After doing this, we can now save it to a new file in a new directory we will make making sure to save the file as a .vrca file.
+<code>
+avatarFolder = f'{path.dirname(path.abspath(__file__))}/Avatars/{avatarName}'
+mkdir(avatarFolder)
+with open(f'{avatarFolder}/{avatarID}.vrca', 'wb') as (f): f.write(req._content)
+</code>
+
+
+Next, to avoid having VRChat see a lot of opened clients for the account you used, we will use their logout endpoint:
+<code>
+session.put('https://api.vrchat.cloud/api/1/logout', data = None, headers = requestHeaders)
+</code>
+
+
+And that is it! That simple. No need to login in the game, just do this! Please I ask for you to be response with this and I will make a note that you can get banned for doing this from the game.
+Maybe soon now VRChat will fix this little thing (or not because it may be necessary). Who knows? The full code for this can be seen below:
+<code>
+#Importing
+from json import loads
+from requests import Session
+from base64 import b64encode
+from os import path, mkdir
+
+
+#Session Initialization
+session = Session()
+
+
+#Necessary Variables
+username = [your username]
+password = [your password]
+encodedInformation = b64encode(f'{username}:{password}'.encode()).decode()
+
+
+#Account Login and Verification (TFA is now necessary in vrchat)
+requestHeaders = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'}
+requestHeaders['Authorization'] = f'Basic {encodedInformation}'
+
+
+session.get('https://api.vrchat.cloud/api/1/auth/user?apiKey=JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26', data = None, headers = requestHeaders)
+
+tfa = [your TFA code]
+session.post(('https://api.vrchat.cloud/api/1/auth/twofactorauth/totp/verify?apiKey=JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26'), {'code' : tfa}, headers = requestHeaders)
+requestHeaders.pop('Authorization')
+
+
+#Avatar Fetching
+avatarID = [avatar ID here]
+
+session.put(f'https://api.vrchat.cloud/api/1/avatars/{avatarID}/select', data = None, headers = self.requestHeaders)
+
+req = session.get('https://api.vrchat.cloud/api/1/auth/user?apiKey=JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26', data = None, headers = requestHeaders)
+req = loads(req.__dict__['_content'])
+avatarUrl = req['currentAvatarAssetUrl']
+
+req = session.get(f'https://api.vrchat.cloud/api/1/avatars/{avatarID}?apiKey=JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26', data = None, headers = requestHeaders)
+req = loads(req.__dict__['_content'])
+avatarName = req['name']
+
+
+#Avatar Downloading
+req = session.get(avatarUrl, data=None, headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'})
+
+avatarFolder = f'{path.dirname(path.abspath(__file__))}/Avatars/{avatarName}'
+mkdir(avatarFolder)
+with open(f'{avatarFolder}/{avatarID}.vrca', 'wb') as (f): f.write(req._content)
+
+
+#VRChat Logout (necessary)
+session.put('https://api.vrchat.cloud/api/1/logout', data = None, headers = requestHeaders)
+</code>
+        </pre>
+    </div>
+</body>
