@@ -25,6 +25,14 @@ pre {
   color: #ffffff;
 }
 
+code.block {
+  display: block;
+  text-align: left;
+  background-color: #1f1f1f;
+  padding: 0.2em;
+  letter-spacing: -0.05em;
+}
+
 pre a:link, pre a:visited {
   color: #ffffff;
 }
