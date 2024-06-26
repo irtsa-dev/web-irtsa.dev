@@ -92,36 +92,33 @@ button p.desc {
 }
 
 .navMenu .dot {
+  margin-left: calc(50% - 110px);
   width: 6px;
   height: 6px;
   background: #ffffff;
   border-radius: 50%;
   opacity: 0;
-  -webkit-transform: translateX(550px);
-  transform: translateX(550px);
-  -webkit-transition: all 0.2s ease-in-out;
-  transition: all 0.2s ease-in-out;
 }
 
 .navMenu a:nth-child(1):hover ~ .dot {
-  -webkit-transform: translateX(570px);
-  transform: translateX(570px);
+  -webkit-transform: translateX(23px);
+  transform: translateX(23px);
   -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   opacity: 1;
 }
 
 .navMenu a:nth-child(2):hover ~ .dot {
-  -webkit-transform: translateX(655px);
-  transform: translateX(655px);
+  -webkit-transform: translateX(108px);
+  transform: translateX(108px);
   -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   opacity: 1;
 }
 
 .navMenu a:nth-child(3):hover ~ .dot {
-  -webkit-transform: translateX(750px);
-  transform: translateX(750px);
+  -webkit-transform: translateX(203px);
+  transform: translateX(203px);
   -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   opacity: 1;
