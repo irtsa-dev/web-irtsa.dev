@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/main.css">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?">
+</head>
+<body>
+    <nav class="navMenu">
+        <a href="/">Home</a>
+        <a href="/blog">Blog</a>
+        <a href="/contact">Contact</a>
+        <div class="dot"></div>
+    </nav>
+    <div class="homeInformation">
+        <h1>
+            Conarn Development Code
+        </h1>
+        
+        <pre>
+Alright finally! The last post I had had some code involved but was a quick post to reintroduce something that I thought should have been shared.
+That was my last post, the last post relating to <b>Conarn</b> had some bit of information but glossed over a lot of details that I will now be doing a
+deeper dive in this post, I hope that sounds good (at least, if that is what you are here for).
+
+
+
+<h2>Save Parsing</h2>
+<hr class="rounded">
+First things first, how the heck does <b>Conarn</b> read the save file and put it into a format to be understood? it is actually really simple and it is
+thanks to how <b>Landfall</b> made their save files. Luckily for me, the save file isn't encrypted or passed through some garbler (great term!) to
+make it harder to read, it is mostly plain text. Below is an example of what a save file actually looks like!
+
+<code class="block">
+version:2
+SerializedSave, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|{"SaveIndex": 1, "SaveID": "bfa99983-9f20-47ed-b2a6-77f7c4092211", 
+"MatchSeed": 257, "CurrentDay": 2, "CurrentQuotaDay": 2, "TimeOfDay": 0, "Money": 121, "CurrentQuota": 34, "LastPlayedLevel": 2, "InventoryItems": [
+{"persistentID": "1f6e51e7-af30-45af-a3e6-9ace370ad8ad"}], "SurfaceItems": [], "PickableNetworkDeals": []}
+</code>
+
+
+
+The main chunk of what we are after is essentional just the information of the save in <b>json</b>! Paying attention to this, there is a function in the
+<b>functions.py</b> file for <b>Conarn</b> with the sole purpose of parsing this information (all it does is chopping off parts that are not needed and
+using the <code>loads</code> from <code>json</code>. The following is the exact function from the file:
+
+<code class="block">
+def ParseSave(file) -> list | bool:
+    global saveFolder
+    
+    try:
+        with open(f'{saveFolder}\\{file}', 'r', errors = 'ignore') as f:
+            information = ''.join([line for line in f]).split('|')
+            mainInformation = loads(information[1])
+            return mainInformation
+    except: return False
+</code>
+
+
+
+You may notice that it utilizes a <code>saveFolder</code> global variable. This variable can be found in the <b>variables.py</b> file where the value for it is
+set to <code>f'C:\\Users\\{environ['USERNAME']}\\AppData\\LocalLow\\Landfall Games\\Content Warning\\Saves'</code>. It is using <code>environ</code> from the <code>os</code>
+import. All it this variable is, is a constant that is pointing to the save folder for <b>Content Warning</b> which by default is in <b>AppData/LocalLow</b> under <b>Landfall Games</b>.
+The function above essentially opens and reads the file the user selected beforehand (which is passed to the function with the <code>file</code> variable). After
+doing so, it splits the content of the file at every "|" mark and gets the 2nd value in this new list that is created. Referencing the save file above, we can see
+that once this is done, it is selecting the information of the save file in the <b>json</b> format. After this, it uses the <code>loads</code> function and
+returns the save file information that is now represented as a dictionary.
+
+
+After this is done, the information will be used as input to initialize a new <code>SaveFileHandler</code> class made to handle functions related to the save file.
+This can be seen in the <code>WindowSelect</code> function in the <b>guisetup.py</b> file. Nested in said function is a function called <code>loadSave</code> which takes
+the save file index to reference which save file to use.
+
+
+<code class="block">
+def loadSave(save: int):
+	frame_savefiles.pack_forget()
+	frame_loading.pack()
+	SaveFile = SFH(ParseSave(filesFromFolder()[save]))
+
+	frame_loading.pack_forget()
+	Window.geometry('600x615')
+	WindowDisplay(Window, SaveFile)
+</code>
+
+
+
+Note here that <code>SFH</code> is the <code>SaveFileHandler</code> class as it is imported as <code>from savehandler import SaveFileHandler as SFH</code> to make it
+easier to type out. You may now also notice the <code>filesFromFolder()</code> function used. The function can be found in the <b>functions.py</b> file and has one
+simple task: return a list of all the save files in the save folder.
+
+
+<code class="block">
+def filesFromFolder() -> list:
+    global saveFolder
+    return [file for file in listdir(saveFolder) if file.endswith('.bin')]
+</code>
+
+
+
+
+<h2>Translating Information<h2>
+<hr class="rounded">
+Now that we have the save file parsed and used to initialize our <code>SaveFileHandler</code> class, what happens to the information?
+
+
+To put it simply, the <code>__init__()</code> function in our <code>SaveFileHandler</code> class handles the break down of the information. Below is the <code>__init__()</code>
+functon.
+
+
+<code class="block">
+def __init__(self, mainInformation):
+	self.saveslot = mainInformation['SaveIndex']
+	self.id = mainInformation['SaveID']
+	self.seed = mainInformation['MatchSeed']
+
+
+	self.day = mainInformation['CurrentQuotaDay']
+	self.week = int((mainInformation['CurrentDay'] - self.day) / 3 + 1)
+	self.time = mainInformation['TimeOfDay']
+
+	self.money = mainInformation['Money']
+	self.views = mainInformation['CurrentQuota']
+
+	self.map = mainInformation['LastPlayedLevel']
+
+	self.houseItems = mainInformation['InventoryItems']
+	self.outsideItems = mainInformation['SurfaceItems']
+
+	self.networkDeals = mainInformation['PickableNetworkDeals']
+</code>
+
+
+
+You may have previously noticed that there is no "weeks" in the save file. Rather, it has two variables, that being: "CurrentDay" and "CurrentQuotaDay" which are used. How
+do we get weeks? Well that is where the little equation at <code>self.week</code> comes in: <code>self.week = int((mainInformation['CurrentDay'] - self.day) / 3 + 1)</code>.
+We also notice that the <code>self.day</code> is set to the "CurrentQuotaDay" variable. With <b>Content Warning</b> essentially being divided into 3 day long weeks, this
+function aims to figure out which week the game is on based on the current day. If our current day was at 13, the "CurrentQuotaDay" would be at 1 and the following would
+happen:
+
+<code class="block">
+self.day = [1]
+
+self.week = int(([13] - [1]) / 3 + 1)
+self.week = int(12 / 3 + 1)
+self.week = int(4.0 + 1)
+self.week = int(5.0)
+self.week = 5
+</code>
+
+
+
+We can check this by knowing that days 1-3 are week 1, 4-6 is week 2, 7-9 is week 3, 10-12 is week 4, and 13-15 is week 5. With us being on day 13, we have appropriately set
+the <code>self.day</code> and <code>self.week</code> variables.
+
+
+
+Later on we also establish a view extra functions with the <code>@property</code> decorator. Below is a list of all the functions:
+
+
+<code class="block">
+@property
+def display_time(self): return {0 : 'Morning', 1 : 'Evening'}[self.time]
+
+
+
+@property
+def display_views(self): 
+	self.UncompressViews()
+	views = self.views
+	self.CompressViews()
+	return views
+
+
+@property
+def display_map(self): return {0 : 'Factory', 1 : 'Mines', 2 : 'Ship'}[self.map]
+
+
+@property
+def display_houseItems(self): return [itemFromID(item['persistentID']) for item in self.houseItems]
+
+
+@property
+def display_outsideItems(self): return [itemFromID(item['persistentID']) for item in self.outsideItems]
+
+#Have this here for future.
+@property
+def display_networkDeals(self): return [self.compressedNetworkDeal(deal) for deal in self.networkDeals]
+
+
+@property
+def formatDetails(self):
+	save = ['version:2\nSerializedSave, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null']
+
+	details = {
+		'SaveIndex' : self.saveslot,
+		'SaveID' : self.id,
+		'MatchSeed' : self.seed,
+		'CurrentDay' : (self.week - 1) * 3 + self.day,
+		'CurrentQuotaDay': self.day,
+		'TimeOfDay' : self.time,
+		'Money' : self.money,
+		'CurrentQuota' : self.views,
+		'LastPlayedLevel' : self.map,
+		'InventoryItems' : self.houseItems,
+		'SurfaceItems' : self.outsideItems,
+		'PickableNetworkDeals' : self.networkDeals
+	}
+
+	save.append(dumps(details))
+	return '|'.join(save)
+</code>
+
+
+
+The reason for these functions is in their name, for displaying the information in a readable way. In the save file, the current map that is / was played on and the time
+of day are displayed as integers. The <code>display_time</code> and <code>display_map</code> aim to translate that integer into plain text. Two more functions that I
+will now go into a little detail about are <code>display_houseItems</code> and <code>display_outsideItems</code>. The reason for these functions is that <b>Content Warning</b>
+does not store the items as the name of the items. Rather, they use and id system where every item has an id similar to <code>c48eda8b-cbb0-4798-b94a-b966d5004f5f</code>. Why
+this is done is beyond me, but it is their decision. To figure out the id for every item, I just manually went into the game, spawned in items using the shop, saved my game,
+then went into the save file to see what id popped up. Rinse and repeat this for majority of items. I say majority because a few items cannot be spawned in with this method.
+To find out the other items (including but not limited to sirMonsterBurger, hermansBorkinBag, and fredGull), I had to take a look at the code for the game. After getting the
+ids for the items, I simply went in and made edits to the save file, replacing the id with a new id I did not know and seeing what item appeared in game.
+
+
+This is why in the <b>variables.py<b> file, you will find the following variable:
+<code class="block">
+Items = {
+    'ID' : {
+        "c48eda8b-cbb0-4798-b94a-b966d5004f5f" : "ancientGestures1",
+        "ec3acf99-c659-400a-83e4-544deb17eba6" : "ancientGestures2",
+        "a4da2558-d060-4c0d-bac9-05d7d8ed59c1" : "ancientGestures3",
+        "a7e48161-7cc8-41dd-adb6-d9dae3734880" : "applause",
+        "fd581672-b8a9-408b-8c3e-75c84f21bdbc" : "apple",
+        "c8edb58c-1e9d-40f9-a4b3-8b3cf396b2dc" : "backflip",
+        "54bdd6a9-8fd6-492f-a970-9a71e5b889ff" : "boomMic",
+        "16ea236c-a348-4cd8-93d2-755d236d2ed2" : "caring",
+        "cfdeedb1-994d-4423-8ec1-2fb46da086f0" : "clapper",
+        "233b951f-4f6d-44f7-9b03-8a115b8bcaba" : "confused",
+        "3fc4e653-529e-495b-a6f9-07a06074a60c" : "dance101",
+        "c3d6b0b1-cb81-462f-bf26-c61bd3a64908" : "dance102",
+        "f50ea940-fdda-4f19-9e67-63a6f921226c" : "dance103",
+        "fd14e6aa-1e64-49f4-ad0d-e04dda6b8b9f" : "dance104",
+        "c359f474-1eb6-4b2c-b62e-88fa14cc6a8e" : "defibrillator",
+        "f3878af1-a47d-42d9-9458-3fcbe1427fd1" : "flare",
+        "fa3ef47d-320b-40f0-b6b6-b406552d7de2" : "flashlightOld",
+        "e873cd77-de94-436f-91d5-c98675088a95" : "flashlightLong",
+        "88dbcae0-7dde-4df3-8030-e6fbc1cddc3b" : "flashlightLongPro",
+        "03b445ad-56cb-4549-ad03-9ae1538c8ac3" : "flashlightModern",
+        "ec3f00e6-82a8-4333-acb5-6bb8776ac28c" : "flashlightModernPro",
+        "8a4f690b-daa5-424b-ae43-572deb410edb" : "fredGull",
+        "439eb5c0-dec5-43dd-b678-dc2af324d185" : "gooBall",
+        "497582d8-c0be-462b-97db-a72e6538aaed" : "gymnastics",
+        "43d8e587-54e2-48ad-8256-62f45611cea4" : "hardHat",
+        "90ce3757-e4c7-4ced-bb1d-acd0299b395a" : "hermansBorkinBag",
+        "0801e048-8c94-444b-b3dd-de331765ad6b" : "hug",
+        "1ddde64a-e09d-46c8-b06b-edbaf6966e19" : "partyPopper",
+        "c9dea120-aae9-4cb7-ba8b-4ac9e6ae775c" : "radioMoney",
+        "259df225-0afb-47fa-840f-19aca2f08cdc" : "reporterMic",
+        "279edcd0-2286-4d55-a0fa-3936c203416a" : "rescueHook",
+        "5f2b203b-7437-4691-9975-99882ab3e00c" : "shockStick",
+        "e01a0559-0532-46b2-9df0-5903dbe4a19e" : "sirMonsterBurger",
+        "e4a1770e-12a8-4676-98f7-9a55da51694d" : "soundPlayer",
+        "87482137-a844-4d5e-9692-a4c391f4f998" : "thumbnail1",
+        "1f6e51e7-af30-45af-a3e6-9ace370ad8ad" : "thumbnail2",
+        "f2f236a9-9e4d-4fde-90df-e9031f3a869d" : "workout1",
+        "d4480b01-fc38-4112-82ce-c598917b2a1d" : "workout2",
+        "aea4d548-edd4-4b06-92e7-5e8bd8104e4a" : "yoga"
+    }
+}
+</code>
+
+
+
+Following this is a line with <code>Items['NAME'] = {Items['ID'][item] : item for item in Items['ID']}</code> which makes a new key in the variable (which is a dictionary) 
+with "NAME" and is essentially the same as the previous dictionary entry but with the keys and values reversed for later convenience. This variable is what allows the 
+following functions to work:
+
+
+<code class="block">
+def itemFromID(itemID: str) -> str:
+    global Items
+    return Items['ID'][itemID]
+
+
+
+def itemFromName(itemName: str) -> str:
+    global Items
+    return Items['NAME'][itemName]
+</code>
+
+
+
+The functions being used here in the <code>SaveFileHandler</code> class at the following functions:
+
+
+<code class="block">
+def AddItem(self, item: str, location: str) -> bool:
+	try:
+		if location == 'house': self.houseItems.append({'persistentID' : itemFromName(item)})
+		else: self.outsideItems.append(generateOutsideItem(itemFromName(item)))
+	except: return False
+	return True
+
+
+@property
+def display_houseItems(self): return [itemFromID(item['persistentID']) for item in self.houseItems]
+
+
+@property
+def display_outsideItems(self): return [itemFromID(item['persistentID']) for item in self.outsideItems]
+</code>
+
+
+
+Now for the views. See, <b>Content Warning</b> does not store the views as is. If in game you see your views at <b>12.8k</b>, but will appear as <b>113</b>. So, what is
+going on? Well, it turns out that the game compresses the views down to a smaller value to be stored. The amount it is compressed also depends on the current day (in practice
+the week is used, math magic happens). What are the compression factors? After constant testing in game, the values listed below happend to be the values, which are stored
+in the <b>variables.py</b> file:
+
+
+<code class="block">
+ViewMultipliers = {
+    1 : 10,
+    2 : 114,
+    3 : 302,
+    4 : 665,
+    5 : 1100,
+    6 : 1900,
+    7 : 3000,
+    8 : 3000,
+    9 : 3000,
+    10 : 3000
+}
+</code>
+
+
+
+We can now see where the <b>113</b> value comes from. If we multiply <b>113</b> by <b>114</b>, we get <b>12,882</b>!
+
+
+
+
+<h2>Saving New Information<h2>
+<hr class="rounded">
+Cool, now we know how the save file is parsed, sent to the class that contains the functions for making edits to the values, now how do we save this new information?
+
+
+
+It is actually really simple. We just have to reattach the information we chopped off and convert the python dictionary back into a json one. Our class for handling the
+save file has a final property function:
+
+
+<code class="block">
+@property
+def formatDetails(self):
+	save = ['version:2\nSerializedSave, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null']
+
+	details = {
+		'SaveIndex' : self.saveslot,
+		'SaveID' : self.id,
+		'MatchSeed' : self.seed,
+		'CurrentDay' : (self.week - 1) * 3 + self.day,
+		'CurrentQuotaDay': self.day,
+		'TimeOfDay' : self.time,
+		'Money' : self.money,
+		'CurrentQuota' : self.views,
+		'LastPlayedLevel' : self.map,
+		'InventoryItems' : self.houseItems,
+		'SurfaceItems' : self.outsideItems,
+		'PickableNetworkDeals' : self.networkDeals
+	}
+
+	save.append(dumps(details))
+	return '|'.join(save)
+</code>
+
+
+
+All this does is create a new list variable with <code>save = ['version:2\nSerializedSave, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null']</code>. After
+doing this, it will pack the information back into variables the game uses, the <code>dumps</code> function then converts it to a json dictionary before appending it to the 
+<code>save</code> variable. It will then join the list as a single string with the "|" (the same character we split the save file at) as a joiner. The resulting string is then
+returned and used whenever you hit the "Save Changes" button to open the save file you are editing and overwrite the current data with the new data.
+
+
+
+
+<h2>Final Thoughts<h2>
+<hr class="rounded">
+
+
+That is how <b>Conarn</b> works to make edits to your save file! I do not mind you heading to it and exploring the code for anything else you may wish to see how it is being done.
+Have fun!
+        </pre>
+    </div>
+</body>
