@@ -59,9 +59,9 @@ def ParseSave(file) -> list | bool:
 
 You may notice that it utilizes a <code>saveFolder</code> global variable. This variable can be found in the <b>variables.py</b> file where the value for it is
 set to <code>f'C:\\Users\\{environ['USERNAME']}\\AppData\\LocalLow\\Landfall Games\\Content Warning\\Saves'</code>. It is using <code>environ</code> from the <code>os</code>
-import. All it this variable is, is a constant that is pointing to the save folder for <b>Content Warning</b> which by default is in <b>AppData/LocalLow</b> under <b>Landfall Games</b>.
-The function above essentially opens and reads the file the user selected beforehand (which is passed to the function with the <code>file</code> variable). After
-doing so, it splits the content of the file at every "|" mark and gets the 2nd value in this new list that is created. Referencing the save file above, we can see
+import. All it this variable is, is a constant that is pointing to the save folder for <b>Content Warning</b> which by default is in <b>AppData/LocalLow</b> under 
+<b>Landfall Games</b>. The function above essentially opens and reads the file the user selected beforehand (which is passed to the function with the <code>file</code> variable).
+After doing so, it splits the content of the file at every "|" mark and gets the 2nd value in this new list that is created. Referencing the save file above, we can see
 that once this is done, it is selecting the information of the save file in the <b>json</b> format. After this, it uses the <code>loads</code> function and
 returns the save file information that is now represented as a dictionary.
 
@@ -131,11 +131,11 @@ def __init__(self, mainInformation):
 
 
 
-You may have previously noticed that there is no "weeks" in the save file. Rather, it has two variables, that being: "CurrentDay" and "CurrentQuotaDay" which are used. How
-do we get weeks? Well that is where the little equation at <code>self.week</code> comes in: <code>self.week = int((mainInformation['CurrentDay'] - self.day) / 3 + 1)</code>.
-We also notice that the <code>self.day</code> is set to the "CurrentQuotaDay" variable. With <b>Content Warning</b> essentially being divided into 3 day long weeks, this
-function aims to figure out which week the game is on based on the current day. If our current day was at 13, the "CurrentQuotaDay" would be at 1 and the following would
-happen:
+You may have previously noticed that there is no "weeks" in the save file. Rather, it has two variables, that being: "CurrentDay" and "CurrentQuotaDay" which 
+are used. How do we get weeks? Well that is where the little equation at <code>self.week</code> comes in: <code>self.week = int((mainInformation['CurrentDay'] - self.day) / 3 + 1)</code>.
+We also notice that the <code>self.day</code> is set to the "CurrentQuotaDay" variable. With <b>Content Warning</b> essentially being divided into 3 day long 
+weeks, this function aims to figure out which week the game is on based on the current day. If our current day was at 13, the "CurrentQuotaDay" would be at
+one and the following would happen:
 
 <code class="block">
 self.day = [1]
@@ -149,8 +149,8 @@ self.week = 5
 
 
 
-We can check this by knowing that days 1-3 are week 1, 4-6 is week 2, 7-9 is week 3, 10-12 is week 4, and 13-15 is week 5. With us being on day 13, we have appropriately set
-the <code>self.day</code> and <code>self.week</code> variables.
+We can check this by knowing that days 1-3 are week 1, 4-6 is week 2, 7-9 is week 3, 10-12 is week 4, and 13-15 is week 5. With us being on day 13, we have 
+appropriately set the <code>self.day</code> and <code>self.week</code> variables.
 
 
 
@@ -212,14 +212,15 @@ def formatDetails(self):
 
 
 
-The reason for these functions is in their name, for displaying the information in a readable way. In the save file, the current map that is / was played on and the time
-of day are displayed as integers. The <code>display_time</code> and <code>display_map</code> aim to translate that integer into plain text. Two more functions that I
-will now go into a little detail about are <code>display_houseItems</code> and <code>display_outsideItems</code>. The reason for these functions is that <b>Content Warning</b>
-does not store the items as the name of the items. Rather, they use and id system where every item has an id similar to <code>c48eda8b-cbb0-4798-b94a-b966d5004f5f</code>. Why
-this is done is beyond me, but it is their decision. To figure out the id for every item, I just manually went into the game, spawned in items using the shop, saved my game,
-then went into the save file to see what id popped up. Rinse and repeat this for majority of items. I say majority because a few items cannot be spawned in with this method.
-To find out the other items (including but not limited to sirMonsterBurger, hermansBorkinBag, and fredGull), I had to take a look at the code for the game. After getting the
-ids for the items, I simply went in and made edits to the save file, replacing the id with a new id I did not know and seeing what item appeared in game.
+The reason for these functions is in their name, for displaying the information in a readable way. In the save file, the current map that is / was played on 
+and the time of day are displayed as integers. The <code>display_time</code> and <code>display_map</code> aim to translate that integer into plain text. Two 
+more functions that I will now go into a little detail about are <code>display_houseItems</code> and <code>display_outsideItems</code>. The reason for these 
+functions is that <b>Content Warning</b> does not store the items as the name of the items. Rather, they use and id system where every item has an id similar 
+to <code>c48eda8b-cbb0-4798-b94a-b966d5004f5f</code>. Why this is done is beyond me, but it is their decision. To figure out the id for every item, I just 
+went into the game, spawned in items using the shop, saved my game, then went into the save file to see what id popped up. Rinse and repeat this for majority 
+of items. I say majority because a few items cannot be spawned in with this method. To find out the other items (including but not limited to sirMonsterBurger,
+hermansBorkinBag, and fredGull), I had to take a look at the code for the game. After getting the ids for the items, I simply went in and made edits to the 
+save file, replacing the id with a new id I did not know and seeing what item appeared in game.
 
 
 This is why in the <b>variables.py<b> file, you will find the following variable:
@@ -271,9 +272,9 @@ Items = {
 
 
 
-Following this is a line with <code>Items['NAME'] = {Items['ID'][item] : item for item in Items['ID']}</code> which makes a new key in the variable (which is a dictionary) 
-with "NAME" and is essentially the same as the previous dictionary entry but with the keys and values reversed for later convenience. This variable is what allows the 
-following functions to work:
+Following this is a line with <code>Items['NAME'] = {Items['ID'][item] : item for item in Items['ID']}</code> which makes a new key in the variable (which is a 
+dictionary) with "NAME" and is essentially the same as the previous dictionary entry but with the keys and values reversed for later convenience. This variable 
+is what allows the following functions to work:
 
 
 <code class="block">
@@ -312,10 +313,10 @@ def display_outsideItems(self): return [itemFromID(item['persistentID']) for ite
 
 
 
-Now for the views. See, <b>Content Warning</b> does not store the views as is. If in game you see your views at <b>12.8k</b>, but will appear as <b>113</b>. So, what is
-going on? Well, it turns out that the game compresses the views down to a smaller value to be stored. The amount it is compressed also depends on the current day (in practice
-the week is used, math magic happens). What are the compression factors? After constant testing in game, the values listed below happend to be the values, which are stored
-in the <b>variables.py</b> file:
+Now for the views. See, <b>Content Warning</b> does not store the views as is. If in game you see your views at <b>12.8k</b>, but will appear as <b>113</b>. So, what is 
+going on? Well, it turns out that the game compresses the views down to a smaller value to be stored. The amount it is compressed also depends on the current day 
+(in practice the week is used, math magic happens). What are the compression factors? After constant testing in game, the values listed below happend to be the values, 
+which are stored in the <b>variables.py</b> file:
 
 
 <code class="block">
@@ -342,12 +343,13 @@ We can now see where the <b>113</b> value comes from. If we multiply <b>113</b> 
 
 <h2>Saving New Information</h2>
 <hr class="rounded">
-Cool, now we know how the save file is parsed, sent to the class that contains the functions for making edits to the values, now how do we save this new information?
+Cool, now we know how the save file is parsed, sent to the class that contains the functions for making edits to the values, now how do we save this 
+new information?
 
 
 
-It is actually really simple. We just have to reattach the information we chopped off and convert the python dictionary back into a json one. Our class for handling the
-save file has a final property function:
+It is actually really simple. We just have to reattach the information we chopped off and convert the python dictionary back into a json one. Our 
+class for handling the save file has a final property function:
 
 
 <code class="block">
@@ -376,10 +378,10 @@ def formatDetails(self):
 
 
 
-All this does is create a new list variable with <code>save = ['version:2\nSerializedSave, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null']</code>. After
-doing this, it will pack the information back into variables the game uses, the <code>dumps</code> function then converts it to a json dictionary before appending it to the 
-<code>save</code> variable. It will then join the list as a single string with the "|" (the same character we split the save file at) as a joiner. The resulting string is then
-returned and used whenever you hit the "Save Changes" button to open the save file you are editing and overwrite the current data with the new data.
+All this does is create a new list variable with <code>save = ['version:2\nSerializedSave, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null']</code>. 
+After doing this, it will pack the information back into variables the game uses, the <code>dumps</code> function then converts it to a json dictionary before appending 
+it to the <code>save</code> variable. It will then join the list as a single string with the "|" (the same character we split the save file at) as a joiner. The resulting 
+string is then returned and used whenever you hit the "Save Changes" button to open the save file you are editing and overwrite the current data with the new data.
 
 
 
@@ -388,8 +390,8 @@ returned and used whenever you hit the "Save Changes" button to open the save fi
 <hr class="rounded">
 
 
-That is how <b>Conarn</b> works to make edits to your save file! I do not mind you heading to it and exploring the code for anything else you may wish to see how it is being done.
-Have fun!
+That is how <b>Conarn</b> works to make edits to your save file! I do not mind you heading to it and exploring the code for anything else you may wish to see how it is 
+being done. Have fun!
         </pre>
     </div>
 </body>
