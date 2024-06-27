@@ -18,6 +18,13 @@ h1 {
   color: #ffffff;
 }
 
+h2 {
+  text-align: center;
+  margin-top: 5%;
+  font-size: 25px;
+  color: #ffffff;
+}
+
 pre {
   text-align: center;
   margin-top: 5%;
@@ -76,6 +83,11 @@ button:hover {
 button p.desc {
   color: rgba(255, 255, 255, 0.75);
   font-size: 12px;
+}
+
+hr.rounded {
+  border-top: 3px solid #ffffff;
+  border-radius: 5px;
 }
 
 .navMenu {
