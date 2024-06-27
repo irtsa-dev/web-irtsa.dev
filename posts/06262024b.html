@@ -61,9 +61,9 @@ You may notice that it utilizes a <code>saveFolder</code> global variable. This 
 set to <code>f'C:\\Users\\{environ['USERNAME']}\\AppData\\LocalLow\\Landfall Games\\Content Warning\\Saves'</code>. It is using <code>environ</code> from the <code>os</code>
 import. All it this variable is, is a constant that is pointing to the save folder for <b>Content Warning</b> which by default is in <b>AppData/LocalLow</b> under 
 <b>Landfall Games</b>. The function above essentially opens and reads the file the user selected beforehand (which is passed to the function with the <code>file</code> 
-variable). After doing so, it splits the content of the file at every "|" mark and gets the 2nd value in this new list that is created. Referencing the save file above, 
-we can see that once this is done, it is selecting the information of the save file in the <b>json</b> format. After this, it uses the <code>loads</code> function 
-and returns the save file information that is now represented as a dictionary.
+variable). After doing so, it splits the content of the file at every "|" mark and gets the 2nd value in this new list that is created. Referencing the save 
+file above, we can see that once this is done, it is selecting the information of the save file in the <b>json</b> format. After this, it uses the <code>loads</code> 
+function and returns the save file information that is now represented as a dictionary.
 
 
 After this is done, the information will be used as input to initialize a new <code>SaveFileHandler</code> class made to handle functions related to the save file.
