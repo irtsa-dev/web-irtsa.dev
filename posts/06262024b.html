@@ -60,8 +60,8 @@ def ParseSave(file) -> list | bool:
 You may notice that it utilizes a <code>saveFolder</code> global variable. This variable can be found in the <b>variables.py</b> file where the value for it is
 set to <code>f'C:\\Users\\{environ['USERNAME']}\\AppData\\LocalLow\\Landfall Games\\Content Warning\\Saves'</code>. It is using <code>environ</code> from the <code>os</code>
 import. All it this variable is, is a constant that is pointing to the save folder for <b>Content Warning</b> which by default is in <b>AppData/LocalLow</b> under 
-<b>Landfall Games</b>. The function above essentially opens and reads the file the user selected beforehand (which is passed to the function with the <code>file</code> variable).
-After doing so, it splits the content of the file at every "|" mark and gets the 2nd value in this new list that is created. Referencing the save file above, 
+<b>Landfall Games</b>. The function above essentially opens and reads the file the user selected beforehand (which is passed to the function with the <code>file</code> 
+variable). After doing so, it splits the content of the file at every "|" mark and gets the 2nd value in this new list that is created. Referencing the save file above, 
 we can see that once this is done, it is selecting the information of the save file in the <b>json</b> format. After this, it uses the <code>loads</code> function 
 and returns the save file information that is now represented as a dictionary.
 
@@ -315,8 +315,8 @@ def display_outsideItems(self): return [itemFromID(item['persistentID']) for ite
 
 Now for the views. See, <b>Content Warning</b> does not store the views as is. If in game you see your views at <b>12.8k</b>, but will appear as <b>113</b>. So, what is 
 going on? Well, it turns out that the game compresses the views down to a smaller value to be stored. The amount it is compressed also depends on the 
-current day (in practice the week is used, math magic happens). What are the compression factors? After constant testing in game, the values listed below happend to be 
-the values, these values are stored in the <b>variables.py</b> file:
+current day (in practice the week is used, math magic happens). What are the compression factors? After constant testing in game, the values listed below 
+happen to be the values, these values are stored in the <b>variables.py</b> file:
 
 
 <code class="block">
@@ -381,8 +381,8 @@ def formatDetails(self):
 All this does is create a new list variable with <code>save = ['version:2\nSerializedSave, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null']</code>
 set. After doing this, it will pack the information back into variables the game uses, the <code>dumps</code> function then converts it to a json dictionary before 
 appending it to the <code>save</code> variable. It will then join the list as a single string with the "|" (the same character we split the save file at) as a joiner. 
-The resulting string is then returned and used whenever you hit the "Save Changes" button to open the save file you are editing and overwrite the current data with the 
-new data.
+The resulting string is then returned and used whenever you hit the "Save Changes" button to open the save file you are editing and overwrite the current 
+data with the new data.
 
 
 
@@ -391,8 +391,8 @@ new data.
 <hr class="rounded">
 
 
-That is how <b>Conarn</b> works to make edits to your save file! I do not mind you heading to it and exploring the code for anything else you may wish to see how it is 
-being done. Have fun!
+That is how <b>Conarn</b> works to make edits to your save file! I do not mind you heading to it and exploring the code for anything else you may wish to see how 
+it is being done. Have fun!
         </pre>
     </div>
 </body>
