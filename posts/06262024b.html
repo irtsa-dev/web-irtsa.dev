@@ -70,7 +70,6 @@ After this is done, the information will be used as input to initialize a new <c
 This can be seen in the <code>WindowSelect</code> function in the <b>guisetup.py</b> file. Nested in said function is a function called <code>loadSave</code> which takes
 the save file index to reference which save file to use.
 
-
 <code class="block">
 def loadSave(save: int):
 	frame_savefiles.pack_forget()
@@ -88,7 +87,6 @@ Note here that <code>SFH</code> is the <code>SaveFileHandler</code> class as it 
 easier to type out. You may now also notice the <code>filesFromFolder()</code> function used. The function can be found in the <b>functions.py</b> file and has one
 simple task: return a list of all the save files in the save folder.
 
-
 <code class="block">
 def filesFromFolder() -> list:
     global saveFolder
@@ -105,7 +103,6 @@ Now that we have the save file parsed and used to initialize our <code>SaveFileH
 
 To put it simply, the <code>__init__()</code> function in our <code>SaveFileHandler</code> class handles the break down of the information. Below is the <code>__init__()</code>
 functon.
-
 
 <code class="block">
 def __init__(self, mainInformation):
@@ -155,7 +152,6 @@ appropriately set the <code>self.day</code> and <code>self.week</code> variables
 
 
 Later on we also establish a view extra functions with the <code>@property</code> decorator. Below is a list of all the functions:
-
 
 <code class="block">
 @property
@@ -224,6 +220,7 @@ made edits to the save file, replacing the id with a new id I did not know and s
 
 
 This is why in the <b>variables.py<b> file, you will find the following variable:
+	
 <code class="block">
 Items = {
     'ID' : {
@@ -276,7 +273,6 @@ Following this is a line with <code>Items['NAME'] = {Items['ID'][item] : item fo
 dictionary) with "NAME" and is essentially the same as the previous dictionary entry but with the keys and values reversed for later convenience. This 
 variable is what allows the following functions to work:
 
-
 <code class="block">
 def itemFromID(itemID: str) -> str:
     global Items
@@ -292,7 +288,6 @@ def itemFromName(itemName: str) -> str:
 
 
 The functions being used here in the <code>SaveFileHandler</code> class at the following functions:
-
 
 <code class="block">
 def AddItem(self, item: str, location: str) -> bool:
@@ -317,7 +312,6 @@ Now for the views. See, <b>Content Warning</b> does not store the views as is. I
 going on? Well, it turns out that the game compresses the views down to a smaller value to be stored. The amount it is compressed also depends on the 
 current day (in practice the week is used, math magic happens). What are the compression factors? After constant testing in game, the values listed below 
 happen to be the values, these values are stored in the <b>variables.py</b> file:
-
 
 <code class="block">
 ViewMultipliers = {
@@ -350,7 +344,6 @@ new information?
 
 It is actually really simple. We just have to reattach the information we chopped off and convert the python dictionary back into a json one. Our 
 class for handling the save file has a final property function:
-
 
 <code class="block">
 @property
