@@ -4,7 +4,6 @@
   padding: 0;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  overflow-x: hidden;
 }
 
 body {
@@ -31,6 +30,7 @@ pre {
   margin-top: 5%;
   font-size: 15px;
   color: #ffffff;
+  overflow-x: hidden;
 }
 
 code.block {
