@@ -131,7 +131,8 @@ it by doing the following:
 
 Except once again, no. Once more, when it comes to setting an icon for displaying, we need to have it as "id" and not "item" for some reason. On top of that,
 If you want to include multiple items, you would think you would copy the section of code for items and make more like so:
-<code>
+
+<code class="block">
 {
   "count" : {
     "min" : 1,
@@ -145,7 +146,8 @@ If you want to include multiple items, you would think you would copy the sectio
 However, what will happen is that the player can have either in their inventory and it will award the recipe. This is not what we want. On top of that, there
 is a lot of information we do not need to have in here due to minecraft having an area where we can have "recipes" and all it will do is showcase that we
 unlocked a recipe instead of it also showing up in the advancement tree. Feel free to use this for your own purposes, but this is how it is done:
-<code>
+            
+<code class="block">
 {
     "parent" : "minecraft:recipes/root",
     "criteria" : {
@@ -179,7 +181,7 @@ unlocked a recipe instead of it also showing up in the advancement tree. Feel fr
 As weird as some of this seems, this will do exactly what we want. Now, what if we want to actually have the advancement showup and have it showup in a default
 section? Well, simple:
 
-<code>
+<code class="block">
 {
     "parent": "minecraft:adventure/root",
     "criteria": {
