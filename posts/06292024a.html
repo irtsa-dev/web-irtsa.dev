@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/main.css">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?">
+</head>
+<body>
+    <nav class="navMenu">
+        <a href="/">Home</a>
+        <a href="/blog">Blog</a>
+        <a href="/contact">Contact</a>
+        <div class="dot"></div>
+    </nav>
+    <div class="homeInformation">
+        <h1>
+            Minecraft Datapack Weirdness
+        </h1>
+        
+        <pre>
+This is a post that isn't meant to be super serious but as a small complaint I have when working with datapacks in minecraft.
+Specifically, when I was working with them in the update 1.20.6.
+
+
+First of all, the <b>pack.mcmeta</b> file. It isn't too bad, but the pack_format is not entirely 100% documented, which made for a slight pain
+in finding the version for 1.20.6. In case anyone wishes to know, it ended up being 41.
+
+
+Moving from that small complaint, is the main reason why I decided to make this: inconsistency. Okay, so what if someone wants to make
+a recipe for a <b>chainmail helmet</b>. Seems simple enough, and you would think that this is how you would do it:
+          
+<code class="block>
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+      "###",
+      "# #"
+  ],
+  "key": {
+      "#": {
+          "item": "minecraft:chain"
+      }
+  },
+  "result": {
+      "item": "minecraft:chainmail_helmet",
+      "count": 1
+  }
+}
+</code>
+
+
+An funny enough, documentation everywhere would have you believe this. However, if you tried to put this into the recipes directory of your
+datapack, you will find out that it does not work. But why? The json seems to not have any errors, the names seem to be right, would could
+be off? Well, I will tell you what is off: <b>"item": "minecraft:chainmail_helmet"</b>.
+
+Yep, turns out, this is not correct. When making a recipe for minecraft, the resulting item will not have "item" be used as the json key,
+instead it needs to be "id". So while the above code will not work, the following will:
+
+<code class="block">
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+      "###",
+      "# #"
+  ],
+  "key": {
+      "#": {
+          "item": "minecraft:chain"
+      }
+  },
+  "result": {
+      "id": "minecraft:chainmail_helmet",
+      "count": 1
+  }
+}
+</code>
+      
+Why? Why is it inconsistent like this? This is not the only thing that is inconsistent either!
+
+Advancements, if we want minecraft to give this recipe to the player now, we need to make an advancement to do so, otherwise it will default
+to giving it once the player has all the items needed (usefull if you want to award multiple recipes). So how do we do that? Well, we will do
+it by doing the following:
+
+<code class="block">
+{
+    "display": {
+        "title": {
+            "text": "Test"
+        },
+        "description": {
+            "text": "test"
+        },
+        "icon": {
+            "item": "minecraft:chainmail_helmet"
+        },
+        "frame": "task",
+        "show_toast": false,
+        "announce_to_chat": false,
+        "hidden": true,
+        "background": "minecraft:textures/gui/advancements/backgrounds/stone.png"
+    },
+    "criteria": {
+        "collectItems": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "count": {
+                            "min": 1,
+                            "max": 1
+                        },
+                        "item": "minecraft:chain"
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        [
+            "collectItems"
+        ]
+    ],
+    "rewards": {
+        "recipes": [
+            "testpack:chainmail_helmet
+        ]
+    }
+}
+</code>
+
+
+Except once again, no. Once more, when it comes to setting an icon for displaying, we need to have it as "id" and not "item" for some reason. On top of that,
+If you want to include multiple items, you would think you would copy the section of code for items and make more like so:
+<code>
+{
+  "count" : {
+    "min" : 1,
+    "max" : 1,
+  },
+  "item": "minecraft:iron_ingot"
+}
+</code>
+
+
+However, what will happen is that the player can have either in their inventory and it will award the recipe. This is not what we want. On top of that, there
+is a lot of information we do not need to have in here due to minecraft having an area where we can have "recipes" and all it will do is showcase that we
+unlocked a recipe instead of it also showing up in the advancement tree. Feel free to use this for your own purposes, but this is how it is done:
+<code>
+{
+    "parent" : "minecraft:recipes/root",
+    "criteria" : {
+        "has_items" : {
+            "conditions" : {
+                "items" : [
+                    {"items": "minecraft:chain"},
+                    {"items": "minecraft:iron_ingot"}
+                ]
+            },
+
+            "trigger": "minecraft:inventory_changed"
+        }
+    },
+
+    "requirements": [
+        [
+            "has_items"
+        ]
+    ],
+
+    "rewards": {
+        "recipes": [
+            "testpack:chainmail_helmet"
+        ]
+    }
+}
+</code>
+
+
+As weird as some of this seems, this will do exactly what we want. Now, what if we want to actually have the advancement showup and have it showup in a default
+section? Well, simple:
+
+<code>
+{
+    "parent": "minecraft:adventure/root",
+    "criteria": {
+        "has_item" : {
+            "conditions" : {
+                "items" : [
+                    {"items": "minecraft:spawner"}
+                ]
+            },
+
+            "trigger": "minecraft:inventory_changed"
+        }
+    },
+
+    "display": {
+        "title": {
+            "text": "New Life",
+            "color": "dark_purple"
+        },
+        "description": {
+            "text": "You did it."
+        },
+        "icon": {
+            "id": "minecraft:spawner"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": true
+    },
+    
+    "requirements": [
+        [
+            "has_item"
+        ]
+    ],
+
+    "rewards": {
+        "experience": 100
+    }
+}
+</code>
+
+
+This will detect that the player has a spawner in their inventory and give them a hidden advancement in the adventure tab.
+
+
+Please mojang/minecraft, can we have some consistency? It is slightly annoying that these minor things such as "item" vs "id" or having "items" rather
+than just "item" will break that advancement/recipe. This concludes my small rant on minecraft datapacks.
+        </pre>
+    </div>
+</body>
