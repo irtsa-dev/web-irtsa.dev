@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/main.css">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?">
+</head>
+<body>
+    <nav class="navMenu">
+        <a href="/">Home</a>
+        <a href="/blog">Blog</a>
+        <a href="/contact">Contact</a>
+        <div class="dot"></div>
+    </nav>
+    <div class="homeInformation">
+        <h1>
+            Grey Hack and Python
+        </h1>
+        
+        <pre>
+Yes, I know Grey Hack doesn't use python as the language of choice for making scripts/programs in the game. 
+However, what some may notice with my <a href="https://github.com/irtsa-dev/builtin-greyscript" target="_blank" rel="noopener">builtin-greyscript</a> (bltings) repository is that I have been essentially
+translating some builtin functions of python into greyscript along with some functions from my other python
+repositories such as <a href="https://github.com/irtsa-dev/PyStatistics" target="_blank" rel="noopener">PyStatistics</a>.
+
+The game does have limitations with the greyscript language though, so some functions do not look entirely
+the same, but they still do the same thing (though how to use them might slightly differ).
+
+
+Per example, the <b>Factoring()</b> function from <b>PyStatistics</b>:
+<code class="block">
+def Factors(number: int) -> list:
+    Factors = iter(([i, number // i] for i in range(1, int(sqrt(number)) + 1) if number % i == 0))
+    return sorted(set([int(i) for e in Factors for i in e]))
+</code>
+
+Grey Hack with greyscript does not have <b>list comprehension</b>, so this is a limitation that had to be
+worked around when making it for greyscript.
+<code class="block">
+def Factors(number: int) -> list:
+    temp = []
+    for i in range(1, int(sqrt(number)) + 1):
+        if number % i == 0: temp.append([i, number // i])
+  
+    factors = []
+    for e in temp:
+        for i in e: factors.append(int(i))
+  
+    return sorted(set(factors))
+</code>
+
+Then, the syntax for for <b>loops</b> and <b>if</b> statements are a bit different:
+<code class="block">
+def Factors(number: int) -> list:
+    temp = []
+    for i in range(1, int(sqrt(number)) + 1)
+        if number % i == 0 then temp.append([i, number // i])
+    end for
+
+    factors = []
+    for e in temp
+        for i in e
+            factors.append(i)
+        end for
+    end for
+
+    return sorted(set(factors))
+</code>
+
+Now, to add an item to a list in greyscript, one uses the <b>.push()</b> function instead of <b>.append()</b>.
+On top of this, we need to replace the <b>int()</b> function with the <b>floor()</b> functions which will work
+the same way in this case scenario. We also do not have the <b>set()</b> function, so I made a new
+function which will work as we need it to. The <b>sorted()</b> function is also different in
+greyscript and is a function of a list where we do .sort afterwards.
+<code class="block">
+def Factors(number: int) -> list:
+    temp = []
+    for i in range(1, floor(sqrt(number)) + 1)
+        if number % i == 0 then temp.push([i, number // i])
+    end for
+
+    factors = []
+    for e in temp
+        for i in e
+            factors.push(i)
+        end for
+    end for
+
+    return remDups(factors).sort
+</code>
+
+Now, we cannot do number // i (which essentially acts like int(number / i)), so we have to do
+it like int(number / i) but of course replace the <b>int()</b> function with the <b>floor()</b> function.
+Declaring a function also works slightly different, same for ending it, so we need to fix
+that too. I also did a bit of variable and function renaming.
+<code class="block">
+factors = function(number)
+    Temp = []
+    for i in range(1, floor(sqrt(number)) + 1)
+        if number % i == 0 then Temp.push([i, floor(number / i)])
+    end for
+
+    Factors = []
+    for pair in temp
+        for item in pair
+            Factors.push(item)
+        end for
+    end for
+
+    return remDups(factors).sort
+end function
+</code>
+
+And there we have it, the Factors() function from my PyStatistics repository translated
+into greyscript for Grey Hack.
+
+
+There are many other functions, but I wanted to look at a case scenario in this post to
+showcase the limitations of greyscript and work arounds for them as I have been making
+the bultin-greyscript repository.
+        </pre>
+    </div>
+</body>
