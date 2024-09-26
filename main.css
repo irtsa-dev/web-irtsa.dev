@@ -82,6 +82,7 @@ button {
   display: inline-block;
   padding: 13px 35px;
   transition: all 200ms;
+  width: 45%;
 }
 
 button.projectbutton {
