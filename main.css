@@ -113,7 +113,7 @@ hr.rounded {
 }
 
 .navMenu .dot {
-  margin-left: calc(50% - 130px);
+  margin-left: calc(50% - 213px);
   width: 6px;
   height: 6px;
   background: #ffffff;
@@ -122,32 +122,32 @@ hr.rounded {
 }
 
 .navMenu a:nth-child(1):hover ~ .dot {
-  -webkit-transform: translateX(0px);
-  transform: translateX(0px);
+  -webkit-transform: translateX(24px);
+  transform: translateX(24px);
   -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   opacity: 1;
 }
 
 .navMenu a:nth-child(2):hover ~ .dot {
-  -webkit-transform: translateX(90px);
-  transform: translateX(90px);
+  -webkit-transform: translateX(147px);
+  transform: translateX(147px);
   -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   opacity: 1;
 }
 
 .navMenu a:nth-child(3):hover ~ .dot {
-  -webkit-transform: translateX(203px);
-  transform: translateX(203px);
+  -webkit-transform: translateX(274px);
+  transform: translateX(274px);
   -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   opacity: 1;
 }
 
 .navMenu a:nth-child(4):hover ~ .dot {
-  -webkit-transform: translateX(203px);
-  transform: translateX(203px);
+  -webkit-transform: translateX(396px);
+  transform: translateX(396px);
   -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   opacity: 1;
