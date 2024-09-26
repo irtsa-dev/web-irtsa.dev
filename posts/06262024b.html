@@ -41,7 +41,7 @@ SerializedSave, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToke
 
 The main chunk of what we are after is essentional just the information of the save in <b>json</b>! Paying attention to this, there is a function in the
 <b>functions.py</b> file for <b>Conarn</b> with the sole purpose of parsing this information (all it does is chopping off parts that are not needed and
-using the <code>loads</code> from <code>json</code>. The following is the exact function from the file:
+using the <code>loads</code> from <code>json</code>). The following is the exact function from the file:
 
 <code class="block">
 def ParseSave(file) -> list | bool:
