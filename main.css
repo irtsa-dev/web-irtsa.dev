@@ -103,7 +103,7 @@ hr.rounded {
   text-decoration: none;
   text-transform: uppercase;
   display: inline-block;
-  width: 80px;
+  width: 120px;
   -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
@@ -138,6 +138,14 @@ hr.rounded {
 }
 
 .navMenu a:nth-child(3):hover ~ .dot {
+  -webkit-transform: translateX(203px);
+  transform: translateX(203px);
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  opacity: 1;
+}
+
+.navMenu a:nth-child(4):hover ~ .dot {
   -webkit-transform: translateX(203px);
   transform: translateX(203px);
   -webkit-transition: all 0.2s ease-in-out;
