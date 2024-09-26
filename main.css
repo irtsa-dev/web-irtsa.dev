@@ -62,8 +62,10 @@ div.contactInformation div.links a:link, div.contactInformation div.links a:visi
 }
 
 .projects {
-  text-align: center;
   display: inline-grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
+  grid-gap: 20px;
 }
 
 button {
@@ -82,8 +84,20 @@ button {
   transition: all 200ms;
 }
 
+button.projectbutton {
+  margin-top: 1%;
+  background-color: rgba(0, 0, 0, 1);
+  border-radius: 0px;
+  cursor: pointer;
+  padding: 0px 0px;
+}
+
 button:hover {
   background-color: rgba(240, 240, 240, 0.5);
+}
+
+button.projectbutton:hover {
+  background-color: rgba(0, 0, 0, 1);
 }
 
 button p.desc {
