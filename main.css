@@ -122,16 +122,16 @@ hr.rounded {
 }
 
 .navMenu a:nth-child(1):hover ~ .dot {
-  -webkit-transform: translateX(23px);
-  transform: translateX(23px);
+  -webkit-transform: translateX(0px);
+  transform: translateX(0px);
   -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   opacity: 1;
 }
 
 .navMenu a:nth-child(2):hover ~ .dot {
-  -webkit-transform: translateX(108px);
-  transform: translateX(108px);
+  -webkit-transform: translateX(90px);
+  transform: translateX(90px);
   -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   opacity: 1;
