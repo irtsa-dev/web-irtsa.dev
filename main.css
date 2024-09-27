@@ -62,7 +62,7 @@ div.contactInformation div.links a:link, div.contactInformation div.links a:visi
 }
 
 .projects {
-  margin-top: 15%;
+  margin-top: 35%;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
