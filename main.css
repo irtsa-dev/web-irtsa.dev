@@ -140,36 +140,30 @@ hr.rounded {
   background: #ffffff;
   border-radius: 50%;
   opacity: 0;
+  transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+  -webkit-transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
 }
 
 .navMenu a:nth-child(1):hover ~ .dot {
   -webkit-transform: translateX(24px);
   transform: translateX(24px);
-  -webkit-transition: all 0.2s ease-in-out;
-  transition: all 0.2s ease-in-out;
   opacity: 1;
 }
 
 .navMenu a:nth-child(2):hover ~ .dot {
   -webkit-transform: translateX(147px);
   transform: translateX(147px);
-  -webkit-transition: all 0.2s ease-in-out;
-  transition: all 0.2s ease-in-out;
   opacity: 1;
 }
 
 .navMenu a:nth-child(3):hover ~ .dot {
   -webkit-transform: translateX(274px);
   transform: translateX(274px);
-  -webkit-transition: all 0.2s ease-in-out;
-  transition: all 0.2s ease-in-out;
   opacity: 1;
 }
 
 .navMenu a:nth-child(4):hover ~ .dot {
   -webkit-transform: translateX(396px);
   transform: translateX(396px);
-  -webkit-transition: all 0.2s ease-in-out;
-  transition: all 0.2s ease-in-out;
   opacity: 1;
 }
