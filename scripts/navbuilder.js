@@ -1,5 +1,5 @@
 const navmenu = document.getElementsByClassName('navMenu')[0];
-const Links = [['index.html','Home'],['blog.html','Blog'],['projects.html','Projects'],['gamereviews.html','Reviews'],['contact.html','Contact']];
+const Links = [['','Home'],['blog','Blog'],['projects','Projects'],['gamereviews','Reviews'],['contact','Contact']];
 const linksLength = Links.length;
 for (var i = 0; i < linksLength; i++) {
     let ele = document.createElement('a');
