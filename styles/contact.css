@@ -1,0 +1,29 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");
+@import url("./sections/main.css");
+@import url("./sections/navigation.css");
+
+h1 {
+    text-align: center;
+    margin-top: 5%;
+    font-size: 35px;
+    color: #ffffff;
+}
+
+pre {
+    text-align: center;
+    margin-top: 5%;
+    font-size: 15px;
+    color: #ffffff;
+    overflow-x: hidden;
+}
+
+div.contactInformation div.links {
+    text-align: center;
+    word-spacing: 15px;
+    font-size: 15px;
+}
+
+div.contactInformation div.links a:link, div.contactInformation div.links a:visited {
+    color: #ffffff;
+    text-decoration: none;
+}

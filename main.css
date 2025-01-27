@@ -69,6 +69,21 @@ div.contactInformation div.links a:link, div.contactInformation div.links a:visi
   gap: 20px
 }
 
+.stars {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.star {
+  filter: saturate(0) brightness(0.3);
+  padding-left: 0.25em;
+}
+
+.f {
+  filter: saturate(0) brightness(1);
+}
+
 button {
   margin-top: 1%;
   text-align: center;
@@ -134,7 +149,7 @@ hr.rounded {
 }
 
 .navMenu .dot {
-  margin-left: calc(50% - 213px);
+  margin-left: calc(50% - 300px);
   width: 6px;
   height: 6px;
   background: #ffffff;
@@ -145,25 +160,31 @@ hr.rounded {
 }
 
 .navMenu a:nth-child(1):hover ~ .dot {
-  -webkit-transform: translateX(24px);
-  transform: translateX(24px);
+  -webkit-transform: translateX(57px);
+  transform: translateX(57px);
   opacity: 1;
 }
 
 .navMenu a:nth-child(2):hover ~ .dot {
-  -webkit-transform: translateX(147px);
-  transform: translateX(147px);
+  -webkit-transform: translateX(177px);
+  transform: translateX(177px);
   opacity: 1;
 }
 
 .navMenu a:nth-child(3):hover ~ .dot {
-  -webkit-transform: translateX(274px);
-  transform: translateX(274px);
+  -webkit-transform: translateX(299px);
+  transform: translateX(299px);
   opacity: 1;
 }
 
 .navMenu a:nth-child(4):hover ~ .dot {
-  -webkit-transform: translateX(396px);
-  transform: translateX(396px);
+  -webkit-transform: translateX(416px);
+  transform: translateX(416px);
+  opacity: 1;
+}
+
+.navMenu a:nth-child(5):hover ~ .dot {
+  -webkit-transform: translateX(542px);
+  transform: translateX(542px);
   opacity: 1;
 }
