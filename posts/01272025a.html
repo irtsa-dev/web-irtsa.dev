@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Site Changes</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../styles/posts.css">
+    <link rel="shortcut icon" type="image/x-icon" href="../assets/favicon.ico?">
+</head>
+<body>
+    <nav class="navMenu"></nav>
+    <div class="homeInformation">
+        <h1>
+            Site Changes
+        </h1>
+        
+        <pre>
+Once again, it has been a good bit since I made a post! This post is more or less going to be addressing the 
+changes I made to how I have the site setup. For those who are curious, the source code for irtsa.dev can be 
+found <a href="https://github.com/irtsa-dev/web-irtsa.dev">here</a> if you are interested. There, the recent edits I made can be seen.
+
+
+
+First, I decided to break up my CSS file that all pages on the site used into smaller chunks for each page. 
+On top of that I further split some of the original CSS into what I called "sections" (modules if you will) 
+that could be imported by the primary CSS files such as the bits that all files would use 
+(called the main.css now), the sections for the navigation bar, and new styling for "stars" which will be 
+used in new part of the site I plan to have.
+
+
+
+Next, since I have multiple image files now, I grouped them into a folder/directory called "assets" where 
+they could be referenced by other pages.
+
+
+
+In addition to having an "assets" folder/directory, I also made a "scripts" folder/directory to have any 
+javascript (or whatever else) that the site will now use. Currently there exists the navbuilder.js and stars.js 
+scripts. To put it simply, I was getting tired of constantly pasting the navigation bar on each page over and 
+over and wanted to make my time easier. Realizing it was a lot of repetitiveness, I made a simple script to 
+handle building the navigation bar on each of the pages, making it so I only had to tell it where on the page I 
+wanted it. Next, the stars.js script will come in handy for the new section of the site I have planned. The name 
+kind of gives it away as it is meant to place stars at certain parts of the site. Similar to the navbuilder.js 
+script allowing me to simply tell where the navigation bar should be, I can simply tell the stars.js script where 
+I want a star rating at, and it will put a star rating. I can specify any number from zero to five and it will 
+have a rating with that many stars out of five.
+
+
+
+Lastly, I just did a little bit of cleanup around the site, so here is hoping it will be easier to add stuff to the 
+site when and where I want!
+        </pre>
+    </div>
+    <script src="../scripts/navbuilder.js"></script>
+</body>
