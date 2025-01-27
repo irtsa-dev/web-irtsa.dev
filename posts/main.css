@@ -1,0 +1,190 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+  background: #000000;
+  font-family: "Montserrat", sans-serif;
+}
+
+h1 {
+  text-align: center;
+  margin-top: 5%;
+  font-size: 35px;
+  color: #ffffff;
+}
+
+h2 {
+  text-align: center;
+  margin-top: 5%;
+  font-size: 25px;
+  color: #ffffff;
+}
+
+pre {
+  text-align: center;
+  margin-top: 5%;
+  font-size: 15px;
+  color: #ffffff;
+  overflow-x: hidden;
+}
+
+code.block {
+  display: table;
+  text-align: left;
+  background-color: #1f1f1f;
+  padding: 0.2em;
+  letter-spacing: -0.05em;
+}
+
+pre a:link, pre a:visited {
+  color: #ffffff;
+}
+
+div.contactInformation div.links {
+  text-align: center;
+  word-spacing: 15px;
+  font-size: 15px;
+}
+
+div.contactInformation div.links a:link, div.contactInformation div.links a:visited {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.posts {
+  text-align: center;
+  margin-top: 5%;
+}
+
+.projects {
+  margin-top: 35%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px
+}
+
+.stars {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.star {
+  filter: saturate(0) brightness(0.3);
+  padding-left: 0.25em;
+}
+
+.f {
+  filter: saturate(0) brightness(1);
+}
+
+button {
+  margin-top: 1%;
+  text-align: center;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 20px;
+  background-color: rgba(200, 200, 200, 0.5);
+  border-radius: 18px;
+  border-width: 0;
+  cursor: pointer;
+  display: inline-block;
+  padding: 13px 35px;
+  transition: all 200ms;
+  width: 45%;
+}
+
+button.projectbutton {
+  margin-top: 1%;
+  background-color: rgba(0, 0, 0, 1);
+  border-radius: 0px;
+  cursor: pointer;
+  padding: 0px 0px;
+}
+
+button:hover {
+  background-color: rgba(240, 240, 240, 0.5);
+}
+
+button.projectbutton:hover {
+  background-color: rgba(0, 0, 0, 1);
+}
+
+button p.desc {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 12px;
+}
+
+hr.rounded {
+  border-top: 3px solid #ffffff;
+  border-radius: 5px;
+}
+
+.navMenu {
+  text-align: center;
+  margin-top: 2%;
+}
+
+.navMenu a {
+  color: #ffffff;
+  font-size: 1.2em;
+  font-weight: 500;
+  text-decoration: none;
+  text-transform: uppercase;
+  display: inline-block;
+  width: 120px;
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+.navMenu a:hover {
+  color: #ffffff;
+}
+
+.navMenu .dot {
+  margin-left: calc(50% - 300px);
+  width: 6px;
+  height: 6px;
+  background: #ffffff;
+  border-radius: 50%;
+  opacity: 0;
+  transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+  -webkit-transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+}
+
+.navMenu a:nth-child(1):hover ~ .dot {
+  -webkit-transform: translateX(57px);
+  transform: translateX(57px);
+  opacity: 1;
+}
+
+.navMenu a:nth-child(2):hover ~ .dot {
+  -webkit-transform: translateX(177px);
+  transform: translateX(177px);
+  opacity: 1;
+}
+
+.navMenu a:nth-child(3):hover ~ .dot {
+  -webkit-transform: translateX(299px);
+  transform: translateX(299px);
+  opacity: 1;
+}
+
+.navMenu a:nth-child(4):hover ~ .dot {
+  -webkit-transform: translateX(416px);
+  transform: translateX(416px);
+  opacity: 1;
+}
+
+.navMenu a:nth-child(5):hover ~ .dot {
+  -webkit-transform: translateX(542px);
+  transform: translateX(542px);
+  opacity: 1;
+}

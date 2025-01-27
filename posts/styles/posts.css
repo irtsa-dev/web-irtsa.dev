@@ -1,0 +1,30 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");
+@import url("./sections/main.css");
+@import url("./sections/navigation.css");
+
+h1 {
+    text-align: center;
+    margin-top: 5%;
+    font-size: 35px;
+    color: #ffffff;
+}
+
+pre {
+    text-align: center;
+    margin-top: 5%;
+    font-size: 15px;
+    color: #ffffff;
+    overflow-x: hidden;
+}
+
+code.block {
+    display: table;
+    text-align: left;
+    background-color: #1f1f1f;
+    padding: 0.2em;
+    letter-spacing: -0.05em;
+}
+
+pre a:link, pre a:visited {
+    color: #ffffff;
+}
