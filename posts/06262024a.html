@@ -38,7 +38,7 @@ Avatar id? Every avatar in the game has an id and typically looks like: avtr_1a4
 If you want to use the developer tools on browsers with it, you can see that whenever you attempt to access the page of an avatar, the following is accessed:
 <code>https://vrchat.com/api/1/avatars/[avatarid]</code>
 
-Whenever this is accessed, a response is given, giving you information on who made the avatar (their in game name and id), the avatar's description, when it 
+Whenever this is accessed, a response is given, giving you information on who made the avatar (their in-game name and id), the avatar's description, when it 
 was made, the name of the avatar, and more. Funny enough, the information one is looking for will not be found here.
 
 
@@ -96,8 +96,8 @@ session.get('https://api.vrchat.cloud/api/1/auth/user?apiKey=JlE5Jldo5Jibnk5O5hT
 
 
 Now, some people may have TFA on their account (and you might have set it up on this account). As such, we can specific an extra chunk of code to 
-account for this (note this will only accept the 6 digit long codes typically seen on authentication apps) note the 
-<code>?apiKey=JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26</code> being passed still as a url variable.
+account for this (note this will only accept the 6-digit long codes typically seen on authentication apps) note the 
+<code>?apiKey=JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26</code> is still being passed as a url variable.
 <code class="block">
 tfa = [your TFA code]
 session.post(('https://api.vrchat.cloud/api/1/auth/twofactorauth/totp/verify?apiKey=JlE5Jldo5Jibnk5O5hTx6XVqsJu4WJ26'), {'code' : tfa}, headers = requestHeaders)
@@ -106,7 +106,7 @@ requestHeaders.pop('Authorization')
 
 
 Now we can get into the real bit. See, the .vrca file was not given when we initially checked the endpoint for the avatar information. I neglected 
-an important detail: that being that the file will be given so long as you are currently in that avatar. As such, we can make a <b>PUT</b> request 
+an important detail: the file will be given so long as you are currently in that avatar. As such, we can make a <b>PUT</b> request 
 to VRChat to select that avatar for us. After doing so, we will switch into that avatar and can then utilize the same endpoint from earlier to get 
 the information of the avatar.
 <code class="block">
@@ -150,8 +150,8 @@ session.put('https://api.vrchat.cloud/api/1/logout', data = None, headers = requ
 </code>
 
 
-And that is it! That simple. No need to login in the game, just do this! Please I ask for you to be response with this and I will make a note that you can 
-get banned from the game for doing this. Maybe soon now VRChat will fix this little thing (or not because it may be necessary). Who knows? The full code for 
+And that is it! That simple. No need to login to the game, just do this! Please I ask for you to be responsible with this and I will make a note that you can 
+get banned from the game for doing this. Maybe VRChat will soon fix this little thing (or not because it may be necessary). Who knows? The full code for 
 this can be seen below:
 <code class="block">
 #Importing
